@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>2023年09月06日 Rust trait | 被讨厌的勇气</title><meta name="author" content="aiwiown"><meta name="copyright" content="aiwiown"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="trait">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2023年09月06日 Rust trait">
+<meta property="og:url" content="http://blog.aiwiown.com/2023/09/06/2023/202309/2023-09-06.trait/index.html">
+<meta property="og:site_name" content="被讨厌的勇气">
+<meta property="og:description" content="trait">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/03/06/zEfkNQaWPJYIbAV.jpg">
+<meta property="article:published_time" content="2023-09-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-11T13:26:56.100Z">
+<meta property="article:author" content="aiwiown">
+<meta property="article:tag" content="Rust">
+<meta property="article:tag" content="trait">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/03/06/zEfkNQaWPJYIbAV.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://blog.aiwiown.com/2023/09/06/2023/202309/2023-09-06.trait/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?15ff47592d52309a90efe9e6975528ae";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":true,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '2023年09月06日 Rust trait',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-11 21:26:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/self/duotone.css"><meta name="generator" content="Hexo 6.3.0"></head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+document.addEventListener('pjax:send', () => {
+  Pace.restart()
+})
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/06/zEfkNQaWPJYIbAV.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">79</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">65</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-archive"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="被讨厌的勇气"><span class="site-name">被讨厌的勇气</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-archive"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">2023年09月06日 Rust trait</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-09-05T16:00:00.000Z" title="发表于 2023-09-06 00:00:00">2023-09-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-11T13:26:56.100Z" title="更新于 2023-09-11 21:26:56">2023-09-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Rust/">Rust</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Rust/trait/">trait</a></span></div><div class="meta-secondline"></div></div></div><article class="post-content" id="article-container"><h2 id="trait"><a href="#trait" class="headerlink" title="trait"></a>trait</h2><p>trait（特征）被用来向Rust编译器描述某些特定类型拥有的且能够被其他类型共享的功能，它使我们可以以一种抽象的方式来定义共享行为。我们还可以使用trait约束来将泛型参数指定为实现了某些特定行为的类型。</p>
+<blockquote>
+<p>trait与其他语言中常被称为接口（interface）的功能类似，但也不尽相同。</p>
+</blockquote>
+<h3 id="trait的基本使用"><a href="#trait的基本使用" class="headerlink" title="trait的基本使用"></a>trait的基本使用</h3><ol>
+<li><p>定义计算面积符trait</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">trait</span> <span class="hljs-title class_">Area</span> &#123;<br>    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">area</span>(&amp;<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">f64</span> &#123;<br>        <span class="hljs-comment">//默认实现</span><br>        <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;无法计算&quot;</span>);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>创建圆的struct, 并为圆实现计算面积的trait</p>
+</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">//定义圆</span><br><span class="hljs-meta">#[derive(Debug)]</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Garden</span> &#123;<br>    <span class="hljs-comment">//半径</span><br>    radius: <span class="hljs-type">f64</span>,<br>&#125;<br><br><span class="hljs-keyword">impl</span> <span class="hljs-title class_">Garden</span> &#123;<br>    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">new</span>(radius: <span class="hljs-type">f64</span>) <span class="hljs-punctuation">-&gt;</span> Garden &#123;<br>        Garden &#123; radius: radius &#125;<br>    &#125;<br>&#125;<br><span class="hljs-comment">//为圆实现计算面积的trait</span><br><span class="hljs-keyword">impl</span> <span class="hljs-title class_">Area</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Garden</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 计算园的面积</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">area</span>(&amp;<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">f64</span> &#123;<br>        PI <span class="hljs-keyword">as</span> <span class="hljs-type">f64</span> * <span class="hljs-keyword">self</span>.radius * <span class="hljs-keyword">self</span>.radius<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建长方形的struct, 并为长方形实现计算面积的trait</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><br><span class="hljs-comment">// rectangle</span><br><span class="hljs-meta">#[derive(Debug)]</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Rectangle</span> &#123;<br>    <span class="hljs-comment">//长</span><br>    length: <span class="hljs-type">f64</span>,<br>    <span class="hljs-comment">//宽</span><br>    width: <span class="hljs-type">f64</span>,<br>&#125;<br><span class="hljs-keyword">impl</span> <span class="hljs-title class_">Rectangle</span> &#123;<br>    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">new</span>(length: <span class="hljs-type">f64</span>, width: <span class="hljs-type">f64</span>) <span class="hljs-punctuation">-&gt;</span> Rectangle &#123;<br>        Rectangle &#123; length, width &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">impl</span> <span class="hljs-title class_">Area</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Rectangle</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 计算长方形的面积</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">area</span>(&amp;<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">f64</span> &#123;<br>        <span class="hljs-keyword">self</span>.length * <span class="hljs-keyword">self</span>.width<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<ol start="4">
+<li>创建正方形的struct, 并为正方形实现计算面积的trait</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><br><span class="hljs-comment">// square</span><br><span class="hljs-meta">#[derive(Debug)]</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Square</span>&#123;<br>    edge_length: <span class="hljs-type">f64</span><br>&#125;<br><br><span class="hljs-keyword">impl</span> <span class="hljs-title class_">Square</span> &#123;<br>    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">new</span>(edge_length: <span class="hljs-type">f64</span>) <span class="hljs-punctuation">-&gt;</span> Square &#123;<br>        Square &#123; edge_length &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">impl</span> <span class="hljs-title class_">Area</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">Square</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 计算正方形的面积</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">area</span>(&amp;<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">f64</span> &#123;<br>        <span class="hljs-keyword">self</span>.edge_length * <span class="hljs-keyword">self</span>.edge_length<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>测试方法</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">garden</span> = Garden::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-number">5.0</span>);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;圆:&#123;:?&#125;, 的面积为:&#123;&#125;&quot;</span>, &amp;garden, garden.<span class="hljs-title function_ invoke__">area</span>());<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">rectangle</span> = Rectangle::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-number">5.0</span>, <span class="hljs-number">105.0</span>);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;长方形:&#123;:?&#125;, 的面积为:&#123;&#125;&quot;</span>, &amp;rectangle, rectangle.<span class="hljs-title function_ invoke__">area</span>());<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">square</span>: Square = Square::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-number">55.0</span>);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;正方形:&#123;:?&#125;, 的面积为:&#123;&#125;&quot;</span>, &amp;square, square.<span class="hljs-title function_ invoke__">area</span>());<br>&#125;<br><br><span class="hljs-comment">// 输出:</span><br><span class="hljs-comment">// 圆:Garden &#123; radius: 5.0 &#125;, 的面积为:78.53981633974483</span><br><span class="hljs-comment">// 长方形:Rectangle &#123; length: 5.0, width: 105.0 &#125;, 的面积为:525</span><br><span class="hljs-comment">// 正方形:Square &#123; edge_length: 55.0 &#125;, 的面积为:3025</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="使用trait作为参数"><a href="#使用trait作为参数" class="headerlink" title="使用trait作为参数"></a>使用trait作为参数</h3><p>trait作为参数的两种常用方式，一是使用impl Trait语法表示参数类型，二是使用trait对泛型参数进行约束。</p>
+<h4 id="使用impl-Trait语法"><a href="#使用impl-Trait语法" class="headerlink" title="使用impl Trait语法"></a>使用impl Trait语法</h4><blockquote>
+<p>这里的impl Trait常被用在一些较短的示例中，但它其实只是trait约束 （trait bound）的一种语法糖.</p>
+</blockquote>
+<figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 打印面积函数</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">print_area</span>(area_data: <span class="hljs-keyword">impl</span> <span class="hljs-title class_">Area</span> + <span class="hljs-built_in">Debug</span>) &#123;<br>    <span class="hljs-built_in">println!</span>(<br>        <span class="hljs-string">&quot;数据需要计算面积的内容为:&#123;:?&#125;, 面积为:&#123;&#125;&quot;</span>,<br>        area_data,<br>        area_data.<span class="hljs-title function_ invoke__">area</span>()<br>    );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="trait对泛型参数进行约束-trait-bound"><a href="#trait对泛型参数进行约束-trait-bound" class="headerlink" title="trait对泛型参数进行约束 trait bound"></a>trait对泛型参数进行约束 trait bound</h4><figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 打印面积函数</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">print_area2</span>&lt;T: Area + <span class="hljs-built_in">Debug</span>&gt;(area_data: T) &#123;<br>    <span class="hljs-built_in">println!</span>(<br>        <span class="hljs-string">&quot;数据需要计算面积的内容为:&#123;:?&#125;, 面积为:&#123;&#125;&quot;</span>,<br>        area_data,<br>        area_data.<span class="hljs-title function_ invoke__">area</span>()<br>    );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="trait对泛型参数进行约束-where-语法"><a href="#trait对泛型参数进行约束-where-语法" class="headerlink" title="trait对泛型参数进行约束 where 语法"></a>trait对泛型参数进行约束 where 语法</h4><figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 打印面积函数</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">print_area3</span>&lt;T&gt;(area_data: T)<br><span class="hljs-keyword">where</span><br>    T: Area + <span class="hljs-built_in">Debug</span>,<br>&#123;<br>    <span class="hljs-built_in">println!</span>(<br>        <span class="hljs-string">&quot;数据需要计算面积的内容为:&#123;:?&#125;, 面积为:&#123;&#125;&quot;</span>,<br>        area_data,<br>        area_data.<span class="hljs-title function_ invoke__">area</span>()<br>    );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="返回实现了trait的类型"><a href="#返回实现了trait的类型" class="headerlink" title="返回实现了trait的类型"></a>返回实现了trait的类型</h3><p>函数的返回值类型也可以使用impl Trait语法，返回某个实现了trait的类型。</p>
+<ul>
+<li>返回实现了Area的trait</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 返回实现了Area的trait</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">return_area_data</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-keyword">impl</span> <span class="hljs-title class_">Area</span>&#123;<br>    Garden::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-number">5.0</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="标准库常用trait"><a href="#标准库常用trait" class="headerlink" title="标准库常用trait"></a>标准库常用trait</h3><p>标准库中提供了很多有用的trait，其中一些trait可应用于结构体或枚举定义的derive属性中。对于使用#[derive]语法标记的类型，编译器会自动为其生成对应trait的默认实现代码。</p>
+<h4 id="格式化输出Debug与Display"><a href="#格式化输出Debug与Display" class="headerlink" title="格式化输出Debug与Display"></a>格式化输出Debug与Display</h4><ul>
+<li><p>Debug trait可以开启格式化字符串中的调试格式，常用于调试上下文中以<code>&#123;:?&#125;</code>或<code>&#123;:#?&#125;</code>格式打印输出一个类型的实例。Debug可以与derive属性一起使用。</p>
+</li>
+<li><p>Display trait是以<code>&#123;&#125;</code>格式打印输出信息的，主要用于面向用户的输出。但是，Display不能与derive属性一起使用。要实现Display，需要实现fmt方法。</p>
+</li>
+</ul>
+<h4 id="等值比较Eq与PartialEq"><a href="#等值比较Eq与PartialEq" class="headerlink" title="等值比较Eq与PartialEq"></a>等值比较Eq与PartialEq</h4><p>Eq trait和PartialEq trait来自数学中的等价关系和局部等价关系。两者都满足以下两个特性。</p>
+<ol>
+<li>对称性（Symmetric），即<code>a == b</code>可推导出<code>b == a</code>。</li>
+<li>传递性（Transitive），即<code>a == b</code>且<code>b == c</code>可推导出<code>a == c</code>。</li>
+</ol>
+<p>Eq相比PartialEq还需要满足反身性（Reflexive），即a &#x3D;&#x3D; a。对于浮点数类型，两个非数字值NaN（Not-a-Number）是互不相等的，即NaN !&#x3D; NaN，因此Rust只为其实现了PartialEq。实现Eq不需要额外的代码，只需要在实现PartialEq的基础上，在类型上标记<code>#[derive(Eq)]</code>即可.</p>
+<p>PartialEq也可以与derive属性一起使用，用于比较一个类型的两个实例是否相等，并开启“&#x3D;&#x3D;”和“!&#x3D;”运算符功能,在结构体上标记<code>#[derive(PartialEq)]</code>，只有所有字段都相等，两个实例才相等，只要有任何字段不相等则两个实例不相等。在枚举上标记<code>#[derive(PartialEq)]</code>，当每一个成员都和其自身相等，且和其他成员都不相等时，两个实例才相等。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><span class="hljs-meta">#[derive(PartialEq)]</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Book</span> &#123;<br>    isbn: <span class="hljs-type">i32</span>,<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>     <span class="hljs-keyword">let</span> <span class="hljs-variable">b1</span> = Book &#123; isbn: <span class="hljs-number">3</span>&#125;;<br>     <span class="hljs-keyword">let</span> <span class="hljs-variable">b2</span> = Book &#123; isbn: <span class="hljs-number">3</span>&#125;;<br>     <span class="hljs-keyword">let</span> <span class="hljs-variable">b3</span> = Book &#123; isbn: <span class="hljs-number">5</span>&#125;;<br>     <span class="hljs-built_in">assert!</span>(b1 == b2);<br>     <span class="hljs-built_in">assert!</span>(b1 != b3);<br> &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="次序比较Ord与PartialOrd"><a href="#次序比较Ord与PartialOrd" class="headerlink" title="次序比较Ord与PartialOrd"></a>次序比较Ord与PartialOrd</h4><p>Ord trait是表示全序关系的trait，全序关系是指集合中任何一对元素都是相互可比较的。Ord应该满足以下两个特性。</p>
+<ol>
+<li>完全反对称性（Total and Asymmetric），即任何一对元素之间的关系只能是a &lt; b、a &#x3D;&#x3D; b或a &gt; b中的其中一种。</li>
+<li>传递性（Transitive），即a &lt; b且b &lt; c可推导出a &lt; c，“&#x3D;&#x3D;”和“&gt;”同理。</li>
+</ol>
+<p>PartialOrd trait是基于排序目的对类型实例进行比较的，可以直接使用&lt;、&gt;、&lt;&#x3D;和&gt;&#x3D;运算符进行比较。PartialOrd应该满足以下两个特性。</p>
+<ol>
+<li>反对称性，即a &lt; b则!(a &gt; b)，反之亦然。</li>
+<li>传递性，即a &lt; b且b &lt; c可推导出a &lt; c，“&#x3D;&#x3D;”和“&gt;”同理。</li>
+</ol>
+<p>Ord和PartialOrd都要求能进行元素是否相等的比较，因此对Eq和PartialEq有以下依赖要求。</p>
+<ol>
+<li>PartialOrd要求类型实现PartialEq。</li>
+<li>Ord要求类型实现PartialOrd和Eq。</li>
+</ol>
+<h4 id="复制值Clone与Copy"><a href="#复制值Clone与Copy" class="headerlink" title="复制值Clone与Copy"></a>复制值Clone与Copy</h4><ul>
+<li><p>Clone trait用于标记可以对值进行深复制的类型，即<code>对栈上和堆上的数据一起复制</code>。要实现Clone，需要实现clone方法。如果要使用<code>#[derive(Clone)]</code>语法标记结构体或枚举，要求结构体的每个字段或枚举的每个值都可调用clone方法，意味着所有字段或值的类型都必须实现Clone。</p>
+</li>
+<li><p>Copy trait用于标记可以按位复制其值的类型，即<code>复制栈上的数据</code>。Copy继承自Clone，这意味着要实现Copy的类型，必须实现Clone的clone方法。如果想让一个类型实现Copy，就必须同时实现Clone，会比较烦琐且累赘，所以Rust提供了方便的derive属性来完成这项重复的工作 <code>#[derive(Copy, Clone)]</code>;</p>
+</li>
+<li><p>Rust为数字类型、字符类型、布尔类型、单元值等实现了Copy，但并非所有类型都可以实现Copy。对于结构体来说，必须所有字段都实现了Copy，这个结构体才能实现Copy。</p>
+</li>
+<li><p>Copy是一个隐式行为。开发者不能重载Copy行为，它永远是简单的位复制。Copy的隐式行为常发生在执行变量绑定、函数参数传递、函数返回等场景中。与Copy不同的是，Clone是一个显式行为。任何类型都可以实现Clone，开发者可以按需实现clone方法。</p>
+</li>
+</ul>
+<h4 id="默认值Default"><a href="#默认值Default" class="headerlink" title="默认值Default"></a>默认值Default</h4><p>Default trait为类型提供有用的默认值，通常用于为结构体的字段提供默认值。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><code class="hljs rust"><span class="hljs-meta">#[derive(Default)]</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Book</span> &#123;<br>    isbn: <span class="hljs-type">i32</span>,<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">b</span> = Book::<span class="hljs-title function_ invoke__">default</span>();<br>    <span class="hljs-built_in">assert_eq!</span>(b.isbn, <span class="hljs-number">0</span>);<br> &#125;<br></code></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://blog.aiwiown.com">aiwiown</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://blog.aiwiown.com/2023/09/06/2023/202309/2023-09-06.trait/">http://blog.aiwiown.com/2023/09/06/2023/202309/2023-09-06.trait/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.aiwiown.com" target="_blank">被讨厌的勇气</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Rust/">Rust</a><a class="post-meta__tags" href="/tags/trait/">trait</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/03/06/zEfkNQaWPJYIbAV.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/09/09/2023/202309/2023-09-09.%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="2023年09月09日 Rust 生命周期"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">2023年09月09日 Rust 生命周期</div></div></a></div><div class="next-post pull-right"><a href="/2023/09/04/2023/202309/2023-09-04.%E6%B3%9B%E5%9E%8B/" title="2023年09月04日 Rust泛型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">2023年09月04日 Rust泛型</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/05/01/2023/202305/2023-05-01-Rust%E5%AE%89%E8%A3%85/" title="2023年05月01日 Rust安装与Cargo"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/08/21/XHIJDrqWCdxQjG2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-01</div><div class="title">2023年05月01日 Rust安装与Cargo</div></div></a></div><div><a href="/2023/05/01/2023/202305/2023-05-01-Rust%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF%E4%B8%8E%E4%BD%BF%E7%94%A8/" title="2023年05月01日 Rust常见错误与使用"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/08/21/XHIJDrqWCdxQjG2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-01</div><div class="title">2023年05月01日 Rust常见错误与使用</div></div></a></div><div><a href="/2023/05/02/2023/202305/2023-05-02-%E5%8F%98%E9%87%8F%E4%B8%8E%E5%8F%AF%E5%8F%98%E6%80%A7/" title="2023年05月02日 Rust变量与可变性"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/08/21/XHIJDrqWCdxQjG2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-02</div><div class="title">2023年05月02日 Rust变量与可变性</div></div></a></div><div><a href="/2023/05/10/2023/202305/2023-05-10-%E6%B3%A8%E9%87%8A/" title="2023年05月10日 Rust注释"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/08/21/XHIJDrqWCdxQjG2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-10</div><div class="title">2023年05月10日 Rust注释</div></div></a></div><div><a href="/2023/05/23/2023/202305/2023-05-23-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B(%E6%A0%87%E9%87%8F%E7%B1%BB%E5%9E%8B)/" title="2023年05月23日 数据类型(标量类型)"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/08/21/XHIJDrqWCdxQjG2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-23</div><div class="title">2023年05月23日 数据类型(标量类型)</div></div></a></div><div><a href="/2023/05/23/2023/202305/2023-05-23-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B(%E5%A4%8D%E5%90%88%E7%B1%BB%E5%9E%8B)/" title="2023年05月23日 数据类型(复合类型)"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/08/21/XHIJDrqWCdxQjG2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-23</div><div class="title">2023年05月23日 数据类型(复合类型)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/03/06/zEfkNQaWPJYIbAV.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">aiwiown</div><div class="author-info__description">人生不是别人赋予的,而是自己选择的,自由就是被别人讨厌~</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">79</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">65</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/dbin0123"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/dbin0123" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:dbin0123@hotmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#trait"><span class="toc-number">1.</span> <span class="toc-text">trait</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#trait%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">trait的基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8trait%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">使用trait作为参数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8impl-Trait%E8%AF%AD%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">使用impl Trait语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#trait%E5%AF%B9%E6%B3%9B%E5%9E%8B%E5%8F%82%E6%95%B0%E8%BF%9B%E8%A1%8C%E7%BA%A6%E6%9D%9F-trait-bound"><span class="toc-number">1.2.2.</span> <span class="toc-text">trait对泛型参数进行约束 trait bound</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#trait%E5%AF%B9%E6%B3%9B%E5%9E%8B%E5%8F%82%E6%95%B0%E8%BF%9B%E8%A1%8C%E7%BA%A6%E6%9D%9F-where-%E8%AF%AD%E6%B3%95"><span class="toc-number">1.2.3.</span> <span class="toc-text">trait对泛型参数进行约束 where 语法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%AE%9E%E7%8E%B0%E4%BA%86trait%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">返回实现了trait的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%BA%93%E5%B8%B8%E7%94%A8trait"><span class="toc-number">1.4.</span> <span class="toc-text">标准库常用trait</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BADebug%E4%B8%8EDisplay"><span class="toc-number">1.4.1.</span> <span class="toc-text">格式化输出Debug与Display</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AD%89%E5%80%BC%E6%AF%94%E8%BE%83Eq%E4%B8%8EPartialEq"><span class="toc-number">1.4.2.</span> <span class="toc-text">等值比较Eq与PartialEq</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AC%A1%E5%BA%8F%E6%AF%94%E8%BE%83Ord%E4%B8%8EPartialOrd"><span class="toc-number">1.4.3.</span> <span class="toc-text">次序比较Ord与PartialOrd</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E5%80%BCClone%E4%B8%8ECopy"><span class="toc-number">1.4.4.</span> <span class="toc-text">复制值Clone与Copy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%80%BCDefault"><span class="toc-number">1.4.5.</span> <span class="toc-text">默认值Default</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/13/2023/202311/2023-10-23.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88(Box,Rc,RefCell)/" title="2023年11月13日 智能指针(Box,Rc,RefCell)">2023年11月13日 智能指针(Box,Rc,RefCell)</a><time datetime="2023-11-12T16:00:00.000Z" title="发表于 2023-11-13 00:00:00">2023-11-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/23/2023/202310/2023-10-23.Cargo/" title="2023年10月23日 Cargo与crates.io">2023年10月23日 Cargo与crates.io</a><time datetime="2023-10-22T16:00:00.000Z" title="发表于 2023-10-23 00:00:00">2023-10-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/09/10/2023/202309/2023-09-10.%E7%BB%83%E4%B9%A0(minigrop%E7%A8%8B%E5%BA%8F)%20copy/" title="2023年09月10日 Rust 练习(minigrop程序)">2023年09月10日 Rust 练习(minigrop程序)</a><time datetime="2023-09-09T16:00:00.000Z" title="发表于 2023-09-10 00:00:00">2023-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/09/10/2023/202309/2023-09-25.%E9%97%AD%E5%8C%85/" title="2023年09月25日 闭包(closure)">2023年09月25日 闭包(closure)</a><time datetime="2023-09-09T16:00:00.000Z" title="发表于 2023-09-10 00:00:00">2023-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/09/09/2023/202309/2023-09-09.%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="2023年09月09日 Rust 生命周期">2023年09月09日 Rust 生命周期</a><time datetime="2023-09-08T16:00:00.000Z" title="发表于 2023-09-09 00:00:00">2023-09-09</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By aiwiown</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="3778678" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true"> </div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="false"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
