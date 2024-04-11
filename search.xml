@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>2024年04月11日 Manjaro安装</title>
+      <link href="/2024/04/11/2024/202404/2024-04-11-Manjaro%E5%AE%89%E8%A3%85/"/>
+      <url>/2024/04/11/2024/202404/2024-04-11-Manjaro%E5%AE%89%E8%A3%85/</url>
+      
+        <content type="html"><![CDATA[<h3 id="manjaro安装教程"><a href="#manjaro安装教程" class="headerlink" title="manjaro安装教程"></a>manjaro安装教程</h3><ul><li>系统下载</li></ul><p><a href="https://manjaro.org/download/">manjaro下载地址</a></p><p><a href="http://rufus.ie/downloads/">rufus工具</a></p><ul><li>写入U盘</li></ul><p>自行百度</p><ul><li>安装</li></ul><p>自行百度</p><p>2.基本环境安装</p><ul><li>pacman-mirrors镜像源</li></ul><figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 选择aliyun镜像</span><br>sudo pacman-mirrors -i -c China -m rank<br></code></pre></td></tr></table></figure><ul><li>配置aur源</li></ul><ol><li>使用nano工具编辑pacman.conf</li></ol><figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><br>sudo nano /etc/pacman.conf<br></code></pre></td></tr></table></figure><ol start="2"><li>添加阿里云镜像</li></ol><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs conf"># 添加aliyun mirrors<br>[archlinuxcn]<br>#SigLevel = Optional TrustedOnly<br># 允许所有<br>SigLevel = Optional TrustAll<br>Server = https://mirrors.aliyun.com/archlinuxcn/$arch<br></code></pre></td></tr></table></figure><ol start="3"><li>更新系统</li></ol><figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">sudo pacman -Syyu<br></code></pre></td></tr></table></figure><ol start="4"><li>安装和配置输入法</li></ol><figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">sudo pacman -S fcitx5 fcitx5-chinese-addons fcitx5-gtk fcitx5-qt kcm-fcitx5<br></code></pre></td></tr></table></figure><p>配置environment</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">sudo nano /etc/environment<br><br># 在文件末尾输入<br>GTK_IM_MODULE=fcitx<br>QT_IM_MODULE=fcitx<br>XMODIFIERS=@im=fcitx<br><br></code></pre></td></tr></table></figure><ol start="5"><li>美化</li></ol><ul><li>安装主题（whitesur dark）</li></ul><p>系统设置-》外观-》获取新的全局主题-》搜索（whitesur dark）安装-》应用主图</p><ul><li>安装dock栏</li></ul><p>安装：添加&#x2F;删除软件-》搜索(plank)-》安装<br>启动：安装完成-》启动<br>设置开机启动：系统设置-》开机与关机-&gt;自动启动-》添加（添加应用程序）-》Plank<br>设置入口（鼠标发到durk上面 按住Ctrl+鼠标右键）首选项</p><figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">sudo pacman -S plank<br></code></pre></td></tr></table></figure><ol start="6"><li>其他软件安装问题</li></ol><p>idea输入法光标不跟随问题</p><ol><li><p>下载idea的java运行时<br><a href="https://hub.nuaa.cf/RikudouPatrickstar/JetBrainsRuntime-for-Linux-x64">JetBrainsRuntime-for-Linux-x64</a></p></li><li><p>修改idea.sh（在文件前加入）</p></li></ol><figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># ---------------------------------------------------------------------</span><br><span class="hljs-comment"># IntelliJ IDEA startup script.</span><br><span class="hljs-comment"># ---------------------------------------------------------------------</span><br><br><span class="hljs-comment"># export IDEA_JDK=下载idea的java运行时</span><br><span class="hljs-built_in">export</span> IDEA_JDK=/data/idea/jbr_jcef-17.0.6-linux-x64-b829.5/<br></code></pre></td></tr></table></figure><p>参考<br>【1】：<a href="https://www.bilibili.com/read/cv11020041/">https://www.bilibili.com/read/cv11020041/</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Manjaro </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Manjaro， Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>2023年11月13日 智能指针(Box,Rc,RefCell)</title>
       <link href="/2023/11/13/2023/202311/2023-10-23.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88(Box,Rc,RefCell)/"/>
       <url>/2023/11/13/2023/202311/2023-10-23.%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88(Box,Rc,RefCell)/</url>
